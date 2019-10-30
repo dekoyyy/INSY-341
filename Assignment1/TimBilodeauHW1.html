@@ -1,0 +1,124 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <title> Assignment  </title>
+    
+        <meta charset="UTF-8">
+        <meta name="author" content="Tim Bilodeau">
+        <meta name="viewport" content ="width=device-width, intial-scale=1.0">  
+        
+        <!-- add css and js link -->
+        <script src="Assignment1.js" type ="text/javascript"> </script>
+    
+    </head>
+
+    <body>
+            <h1> Question 1 : calculate GPA </h1> 
+            <h2> a. Create a function toLetterGrade() that takes an array of percentages and returns a an array of corresponding grades. </h2>
+            
+            <script>
+            var test1 = [80, 86, 70, 40];
+            var letter = toLetterGrade(test1);
+            document.write(letter);
+            </script>
+            
+            
+            
+           
+            <h2> b. Create a function toGradePoints() that takes an array of letter grades as input and returns a corresponding array of grade points. </h2> 
+            
+            <script>
+            var test2 = ["A-", "A-", "A", "A"];
+            var grade = toGradePoints(test2);
+            document.write(grade);
+            </script>
+            
+            
+        <h1> Question 2 : Word processing </h1>
+            <h2> 
+            a. Create a function middle() that returns the middle character/s of a word. If a word has even number of characters, return the middle two characters. </h2> 
+            
+            <script>
+            var test3 = "intermittent";
+            document.write(middle(test3));
+            </script>
+         
+            <h2>
+            b. Write function, pig(), that takes a text as input, translates this text to Pig Latin and returns this new Pig Latin text <br>
+            English is translated to Pig Latin by taking the first letter of every word, moving it to the end of the word and adding ‘ay’. </h2>
+            
+            <script> 
+            var test4 = "Once upon a time in INSY Three-Forty-One"
+            document.write(pig(test4));
+            </script>
+        
+            <h2> 
+            c. Write a function largestString() which takes an array of strings as input and returns the largest string in this array. </h2>
+            
+            <script>
+            var test5 = ["bateau", "gateau", "bateaus"];
+            document.write(largestString(test5));
+            </script>
+            
+        
+        <h1> Question 3 : Numbers </h1>
+            <h2>
+            a. Write a function, max2() that takes two numbers and returns the maximum of these 2 numbers. </h2>
+            
+            <script> 
+            document.write(max2(3,5));
+            </script>
+            
+         
+            <h2>            
+            b. Write a function, min3 () that takes three numbers and returns the minimum of these 3 numbers. </h2>
+            
+            <script>
+            document.write(min3(3,2,4));
+            </script>
+            
+           
+            <h2>
+            c. Write a function, largest() that takes an array of numbers and returns the largest number </h2>
+           
+            <script>
+            var test6 = [1,2,4,10,-10];
+            document.write(largest(test6));
+            </script>
+              
+            <h2>
+            d. Write a function, isEven(), that takes a number as input and returns “true” if the number is even and returns “false” otherwise? </h2>
+            
+            <script>
+            var test7 = 3; 
+            document.write(isEven(test7));
+            </script>
+            
+            <h2>
+            e. Write a function, cumulative() that asks the user for a number, n , and prints the sum of the numbers 1 to n. </h2>  
+            
+            <script>
+            var test8 = 100;
+            document.write(cumulative(test8));
+            </script>
+          
+            <h2>
+            f. Write a function, cumulativeFiltered()  which is similar to the cumulative() function but only multiples of three or five are considered in the sum. For e.g. add 3, 5, 6, 9, 10, 12, 15 for n=17 </h2>
+            
+            <script>
+            var test9 = 15;
+            document.write(cumulativeFiltered(test9));
+            </script>
+            
+
+            <h2>
+            g. Write a function reachSingle() that takes a number and returns the number of times you must multiply the digits in num so as to reach a single digit. The following example should be helpful to understand the requirement.</h2>
+        
+            <script>
+            document.write(reachSingle(5552));
+            </script>
+        
+        
+            
+    </body>
+</html>
