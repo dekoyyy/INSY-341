@@ -1,6 +1,5 @@
 // question 1 
-function getInput() { // gets input from text box for guessing game 
-	var target1;
+function getInput() { // gets input from text box for guessing game
 	var humanGuess;
 	
 	humanGuess = document.getElementById("humanGuess").value;
@@ -65,11 +64,16 @@ function try1() {
 	target1.innerHTML = "test successful";
 }
 
-// question 2 
+// question 2
+// I screwed up a little by just copying the display + code  I made for the second part and changing it slightly as it used the same DOM for both things.
+// My code is not super pretty but it works so far and is free of bugs as long as you don't use the two tic-tac-toe games at the same time
+// I had to add a '1' after every function to differentiate the functions as they have to use different doms
+// for the doms of the 1st part, I added a 1 at the end to differentiate them
+
 var playerCount = 0; // setting global variable so it's only affected by refresh
 
 
-var game = new Object(); // initializing object 
+var game = new Object(); // initializing object
 game.user1 =""; // used to determine xs and os 
 game.user2 =""; // used to determine xs and os
 game.user1History = []; // moves will be stored there
@@ -79,6 +83,7 @@ game.move = 1;
 game.winner = 0; // used to set the winner
 game.user1wins = 0;
 game.user2wins = 0;
+game.history = [[], [], []];
 
 function getInput2(clicked_id) { // set who has Xs and who has Os
 	if (clicked_id == "user1X") {
@@ -89,7 +94,8 @@ function getInput2(clicked_id) { // set who has Xs and who has Os
 		game.user2 ="X";
 	}
 	
-}	
+}
+
 
 function confirmChoice() { // removes the choices once the confirm button is clicked
 		var target1;
@@ -114,6 +120,29 @@ function confirmChoice() { // removes the choices once the confirm button is cli
 		 
 }
 
+function confirmChoice1() { // removes the choices once the confirm button is clicked
+	var target1;
+	var target2;
+	var target3;
+	var target4;
+
+	target1 = document.getElementById("user1Xs1");
+	target2 = document.getElementById("user1Os1");
+	target3 = document.getElementById("playerTurn1");
+	target4 = document.getElementById("confirmChoices1");
+
+	if (game.user1 == "X" || game.user1 == "O"){
+		target1.innerHTML = ""; // remove choices
+		target2.innerHTML = ""; // remove choices
+		target3.innerHTML= "Player 1 chose " + game.user1 + ". Player 2 chose " + game.user2; // display confirmation message
+		target4.innerHTML = "Press to start the game"; // update button messsage
+		target4.setAttribute("onclick","startGame1()") // update button onclick to start the game
+	} else {
+		target3.innerHTML ="Please make a choice before clicking on confirm."
+	}
+
+}
+
 function startGame() {
 	var i = 1;
 	var target;
@@ -126,7 +155,7 @@ function startGame() {
 	
 	for (i = 1; i < 10; i ++) { // looping through images to update the onclick function 
 		target = document.getElementById(i);
-		target.setAttribute("onclick", onclick ="updatePlayerTurn(), makeMove(this.id), checkWinner()")
+		target.setAttribute("onclick", "updatePlayerTurn(), makeMove(this.id), checkWinner()")
 	}
 	
 	if (game.user1 == "X") {
@@ -139,13 +168,40 @@ function startGame() {
 	target2.innerHTML = xPlayer + " chose Xs, so he will begin. Click on any the tic tac toe board to make your first move.";
 }
 
+function startGame1() {
+	var i = 1;
+	var target;
+	var target1;
+	var target2;
+	var xPlayer;
+	var j;
+
+	target1 = document.getElementById("confirmChoices1");
+	target2 = document.getElementById("playerTurn1");
+
+	for (i = 1; i < 10; i ++) { // looping through images to update the onclick function
+		j = i.toString() + i.toString();
+		target = document.getElementById(j);
+		target.setAttribute("onclick", "updatePlayerTurn1(), makeMove1(this.id), checkWinner1()")
+	}
+
+	if (game.user1 == "X") {
+		xPlayer = "Player 1";
+	} else if (game.user1 == "O") {
+		xPlayer = "Player 2";
+	}
+
+	target1.remove(); // removing the button
+	target2.innerHTML = xPlayer + " chose Xs, so he will begin. Click on any the tic tac toe board to make your first move.";
+}
+
 function updatePlayerTurn() {
 	var target1;
-	var textPlayer
+	var textPlayer;;
 	
-	target1 = document.getElementById("playerTurn")
-	
-	if (playerCount %2 == 0) {;
+	target1 = document.getElementById("playerTurn");;
+
+if (playerCount % 2 == 0) {
 		game.currentUser = "X";
 		textPlayer = "O"; // when X is playing, it only gets updated after the turn so when game.currentUser = x, o should be displayed in the text
 	} else if (playerCount % 2 == 1) {
@@ -157,6 +213,26 @@ function updatePlayerTurn() {
 	playerCount++;
 	target1.innerHTML = "It's " + textPlayer + "'s time to play!";
 	 
+}
+
+function updatePlayerTurn1() {
+	var target1;
+	var textPlayer;;
+
+	target1 = document.getElementById("playerTurn1");;
+
+	if (playerCount % 2 == 0) {
+		game.currentUser = "X";
+		textPlayer = "O"; // when X is playing, it only gets updated after the turn so when game.currentUser = x, o should be displayed in the text
+	} else if (playerCount % 2 == 1) {
+		game.currentUser = "O";
+		textPlayer = "X"; // when X is playing, it only gets updated after the turn so when game.currentUser = o, x should be displayed in the text
+	}
+
+	game.move = playerCount;
+	playerCount++;
+	target1.innerHTML = "It's " + textPlayer + "'s time to play!";
+
 }
 
 function makeMove (clickedId) { // updates game history and visual display + removes onclick so the case cant be replayed
@@ -213,6 +289,44 @@ var arrayLength;
 
 }
 
+function makeMove1 (clickedId) { // updates game history and visual display + removes onclick so the case cant be replayed
+	var playerMove;
+
+	if (game.currentUser == "X"){
+		playerMove = "X";
+		if (clickedId %2 != 0) {
+			document.getElementById(clickedId).setAttribute("src", "img/greyX.png");
+		} else if (clickedId % 2 == 0 ) {
+			document.getElementById(clickedId).setAttribute("src", "img/whiteX.png");
+		}
+	} else if (game.currentUser == "O") { // if user2 is current user, update his game history
+		playerMove = "O";
+		if (clickedId %2 != 0) {
+			document.getElementById(clickedId).setAttribute("src", "img/greyO.png");
+		} else if (clickedId % 2 == 0 ) {
+			document.getElementById(clickedId).setAttribute("src", "img/whiteO.png");
+		}
+	}
+	document.getElementById(clickedId).setAttribute("onclick", "makeOtherMove1()"); // changes onclick so it can't be chosen again
+	insertMoveMultiArray(clickedId, playerMove); // inserting X or O in the multi dimensional array
+
+	// console.log(game.history, playerMove);
+
+}
+
+function insertMoveMultiArray(clickedId, playerMove) {
+	var rowNumber = 0;
+	var indexNumber = 0;
+	var actualId;
+
+	actualId = clickedId.charAt(0) - 1; // workaround to get the first character of the id. IDs are 11, 22, ... so it returns 0, 1, ...
+	rowNumber = Math.floor(actualId/3); // 0, 1, 2 return 0. 3, 4, 5 return 1, ... returns the vertical position in the array
+	indexNumber = actualId - 3*rowNumber; // returns the horizontal position in the array
+
+	game.history[rowNumber][indexNumber] = playerMove;
+
+}
+
 function checkWinner () {
 
 	var user1;
@@ -232,7 +346,10 @@ function checkWinner () {
 	
 	user1 = game.user1History; // setting shortcut
 	user2 = game.user2History; // setting shortcut
-	
+
+	// checks if user 1 won
+	// sets winner = 1 if user 1 won
+
 	var user1has1 = user1.includes("1");
 	var user1has2 = user1.includes("2");
 	var user1has3 = user1.includes("3");
@@ -261,6 +378,9 @@ function checkWinner () {
 		winner = 1;
 	} 
 
+	// checks if user 2 won
+	// sets winner = 2 if user 2 won
+
 	var user2has1 = user2.includes("1");
 	var user2has2 = user2.includes("2");
 	var user2has3 = user2.includes("3");
@@ -288,11 +408,134 @@ function checkWinner () {
 		winner = 2;
 	}	else if (user2has7 == true && user2has8 == true && user2has9 == true) {
 		winner = 2;
-	} 
+	}
+
+
+
+	// checks if winner is user 1 or 2 and returns winner to stop the function (in the case someone wins on the last move, which would set winner = 3)
+
 	if (winner == 1 || winner == 2) {
 		endGame(winner);
+		return winner;
 	}
+	// checks ties, if every box is used and no winner has been chosen yet -> tie
+	var case1NotEmpty = user1has1 == true || user2has1 == true;
+	var case2NotEmpty = user1has2 == true || user2has2 == true;
+	var case3NotEmpty = user1has3 == true || user2has3 == true;
+	var case4NotEmpty = user1has4 == true || user2has4 == true;
+	var case5NotEmpty = user1has5 == true || user2has5 == true;
+	var case6NotEmpty = user1has6 == true || user2has6 == true;
+	var case7NotEmpty = user1has7 == true || user2has7 == true;
+	var case8NotEmpty = user1has8 == true || user2has8 == true;
+	var case9NotEmpty = user1has9 == true || user2has9 == true;
+
+	if (case1NotEmpty == true && case2NotEmpty == true && case3NotEmpty == true && case4NotEmpty == true && case5NotEmpty == true && case6NotEmpty == true && case7NotEmpty == true && case8NotEmpty == true && case9NotEmpty == true ) {
+		winner = 3;
+		endGame(winner);
+	}
+
 	// document.getElementById("test1234567").innerHTML = winner;
+}
+
+function checkWinner1 () {
+
+// console.log(game.history[0][0])
+
+
+
+	var winner = 0;
+	var player1 = game.user1;
+	var player2 = game.user2;
+	var player1or2 = "X" || "O";
+
+	var case1 = game.history[0][0];
+	var case2 = game.history[0][1];
+	var case3 = game.history[0][2];
+	var case4 = game.history[1][0];
+	var case5 = game.history[1][1];
+	var case6 = game.history[1][2];
+	var case7 = game.history[2][0];
+	var case8 = game.history[2][1];
+	var case9 = game.history[2][2];
+	// console.log(player1, player2);
+
+	// checks if user 1 won
+	// sets winner = 1 if user 1 won
+
+	if (case1 == player1 && case2 == player1 && case3 == player1) { 			// [x,x,x][,,][,,]
+		winner = 1;
+	}	else if (case4 == player1 && case5 == player1 && case6 == player1) {	// [,,][x,x,x][,,]
+		winner = 1;
+	}	else if (case7 == player1 && case8 == player1 && case9 == player1) { 	// [,,][,,][x,x,x]
+		winner = 1;
+	}	else if (case1 == player1 && case4 == player1 && case7 == player1) { 	// [x,,][x,,][x,,]
+		winner = 1;
+	}	else if (case2 == player1 && case5 == player1 && case8 == player1) { 	// [,x,][,x,][,x,]
+		winner = 1;
+	}	else if (case3 == player1 && case6 == player1 && case9 == player1) { 	// [,,x][,,x][,,x]
+		winner = 1;
+	}	else if (case1 == player1 && case5 == player1 && case9 == player1) { 	// [x,,][,x,][,,x]
+		winner = 1;
+	}	else if (case3 == player1 && case5 == player1 && case7 == player1) { 	// [,,x][,x,][x,,]
+		winner = 1;
+	}
+
+	// checks if user 2 won
+	// sets winner = 2 if user 2 won
+
+	if (case1 == player2 && case2 == player2 && case3 == player2) {				// [x,x,x][,,][,,]
+		winner = 2;
+	}	else if (case4 == player2 && case5 == player2 && case6 == player2) {	// [,,][x,x,x][,,]
+		winner = 2;
+	}	else if (case7 == player2 && case8 == player2 && case9 == player2) {	// [,,][,,][x,x,x]
+		winner = 2;
+	}	else if (case1 == player2 && case4 == player2 && case7 == player2) {	// [x,,][x,,][x,,]
+		winner = 2;
+	}	else if (case2 == player2 && case5 == player2 && case8 == player2) { 	// [,x,][,x,][,x,]
+		winner = 2;
+	}	else if (case3 == player2 && case6 == player2 && case9 == player2) { 	// [,,x][,,x][,,x]
+		winner = 2;
+	}	else if (case1 == player2 && case5 == player2 && case9 == player2) { 	// [x,,][,x,][,,x]
+		winner = 2;
+	}	else if (case3 == player2 && case5 == player2 && case7 == player2) { 	// [,,x][,x,][x,,]
+		winner = 2;
+	}
+
+	// checks if winner is user 1 or 2 and returns winner to stop the function (in the case someone wins on the last move, which would set winner = 3)
+	if (winner == 1 || winner == 2) {
+		endGame1(winner);
+		return winner;
+	}
+
+	// checks ties, if every box is used and no winner has been chosen yet -> tie
+
+	var case1NotEmpty = case1 == player1 || case1 == player2;
+	var case2NotEmpty = case2 == player1 || case2 == player2;
+	var case3NotEmpty = case3 == player1 || case3 == player2;
+	var case4NotEmpty = case4 == player1 || case4 == player2;
+	var case5NotEmpty = case5 == player1 || case5 == player2;
+	var case6NotEmpty = case6 == player1 || case6 == player2;
+	var case7NotEmpty = case7 == player1 || case7 == player2;
+	var case8NotEmpty = case8 == player1 || case8 == player2;
+	var case9NotEmpty = case9 == player1 || case9 == player2;
+
+	// console.log("1", case1, case1NotEmpty);
+	// 	console.log("2", case2, case2NotEmpty);
+	// 	console.log("3", case3, case3NotEmpty);
+	// console.log("4", case4, case4NotEmpty);
+	// console.log("5", case5, case5NotEmpty);
+	// console.log("6", case6, case6NotEmpty);
+	// console.log("7", case7, case7NotEmpty);
+	// console.log("8", case8, case8NotEmpty);
+	// console.log("9", case9, case9NotEmpty);
+	// console.log(game.history);
+
+	if (case1NotEmpty == true && case2NotEmpty == true && case3NotEmpty == true && case4NotEmpty == true && case5NotEmpty == true && case6NotEmpty == true && case7NotEmpty == true && case8NotEmpty == true && case9NotEmpty == true ) {
+		winner = 3;
+		endGame1(winner);
+	}
+
+		//  console.log(winner);
 }
 
 function makeOtherMove () { // tells player to chose another move if this case was chosen previously
@@ -302,26 +545,69 @@ function makeOtherMove () { // tells player to chose another move if this case w
 	target.innerHTML = "This move was already performed, please make another move";
 }
 
+function makeOtherMove1 () { // tells player to chose another move if this case was chosen previously
+	var target;
+
+	target = document.getElementById("playerTurn1");
+	target.innerHTML = "This move was already performed, please make another move";
+}
+
 function endGame(result) {
 	var i = 1;
 	var target;
 	var target1;
 	var target2;
+	var text;
 	
 
 	for (i = 1; i < 10; i ++) { // removes onclick so game can't be played anymore
 		target = document.getElementById(i);
-		target.setAttribute("onclick", onclick="null");
+		target.setAttribute("onclick", "null");
 	}
+
 	if (result == 1 ) {
 		game.user1wins++;
+		text = "Player " + result + " won. The score is " + game.user1wins + " for player 1 and " + game.user2wins + " for player 2";
 	} else if (result == 2) {
 		game.user2wins++;
+		text = "Player " + result + " won. The score is " + game.user1wins + " for player 1 and " + game.user2wins + " for player 2";
+	} else if (result == 3) {
+		text = "This is a tie, nobody won. The score is " + game.user1wins + " for player 1 and " + game.user2wins + " for player 2";
 	}
 	target1 = document.getElementById("playerTurn");
 	target2 = document.getElementById("buttonTest");
-	target1.innerHTML = "Player " + result + " won. The score is " + game.user1wins + " for player 1 and " + game.user2wins + " for player 2";
+	target1.innerHTML = text;
 	target2.insertAdjacentHTML("beforeend", "<button id ='confirmChoices' type='button' class='btn btn-success' onclick ='startNewGame()'> Start new game !</button>");
+
+}
+
+function endGame1(result) {
+	var i = 1;
+	var j;
+	var target;
+	var target1;
+	var target2;
+	var text;
+
+
+	for (i = 1; i < 10; i ++) { // removes onclick so game can't be played anymore
+		j = i.toString() + i.toString(); // workaround for dom
+		target = document.getElementById(j);
+		target.setAttribute("onclick", "null");
+	}
+	if (result == 1 ) {
+		game.user1wins++;
+		text = "Player " + result + " won. The score is " + game.user1wins + " for player 1 and " + game.user2wins + " for player 2";
+	} else if (result == 2) {
+		game.user2wins++;
+		text = "Player " + result + " won. The score is " + game.user1wins + " for player 1 and " + game.user2wins + " for player 2";
+	} else if (result == 3) {
+		text = "This is a tie, nobody won. The score is " + game.user1wins + " for player 1 and " + game.user2wins + " for player 2";
+	}
+	target1 = document.getElementById("playerTurn1");
+	target2 = document.getElementById("buttonTest1");
+	target1.innerHTML = text;
+	target2.insertAdjacentHTML("beforeend", "<button id ='confirmChoices1' type='button' class='btn btn-success' onclick ='startNewGame1()'> Start new game !</button>");
 
 }
 
@@ -336,7 +622,7 @@ function startNewGame () {
 	target1 = document.getElementById("user1Xs");
 	target2 = document.getElementById("user1Os");
 	target3 = document.getElementById("buttonTest");
-	target4 = document.getElementById("playerTurn")
+	target4 = document.getElementById("playerTurn");;
 	
 	target1.insertAdjacentHTML("beforeend", "<label class='form-check-label'><input id = 'user1X' type='radio' class='form-check-input' name ='optradio' onclick ='getInput2(this.id)'> Player 1 is Xs, Player 2 is Os </label>");
 	target2.insertAdjacentHTML("beforeend", "<label class='form-check-label'><input id = 'user1O' type='radio' class='form-check-input' name ='optradio' onclick ='getInput2(this.id)'> Player 1 is Os, Player 2 is Xs </label>");
@@ -355,6 +641,42 @@ function startNewGame () {
 	 
 	game.user1History = [];
 	game.user2History = [];
+	playerCount = 0;
+	game.user1 ="";
+	game.user2 ="";
+}
+
+function startNewGame1 () {
+	var i = 1;
+	var j;
+	var target;
+	var target1;
+	var target2;
+	var target3;
+	var target4;
+
+	target1 = document.getElementById("user1Xs1");
+	target2 = document.getElementById("user1Os1");
+	target3 = document.getElementById("buttonTest1");
+	target4 = document.getElementById("playerTurn1");
+
+	target1.insertAdjacentHTML("beforeend", "<label class='form-check-label'><input id = 'user1X' type='radio' class='form-check-input' name ='optradio' onclick ='getInput2(this.id)'> Player 1 is Xs, Player 2 is Os </label>");
+	target2.insertAdjacentHTML("beforeend", "<label class='form-check-label'><input id = 'user1O' type='radio' class='form-check-input' name ='optradio' onclick ='getInput2(this.id)'> Player 1 is Os, Player 2 is Xs </label>");
+	target3.innerHTML ="";
+	target3.insertAdjacentHTML("beforeend", "<button id ='confirmChoices1' type='button' class='btn btn-success' onclick ='confirmChoice1()'>Confirm your choice</button>");
+	target4.innerHTML = "Choose your sides, and confirm you choices";
+	for (i = 1; i < 10; i ++) {
+		j = i.toString() + i.toString(); // workaround for dom
+		target = document.getElementById(j);
+		target.setAttribute("onclick", "null");
+		if (i % 2 == 0) {
+			target.setAttribute("src", "img/FFFFFF.jpeg");
+		} else if (i % 2 == 1) {
+			target.setAttribute("src", "img/CDCDCD.jpeg");
+		}
+	}
+
+	game.history = [[],[],[]];
 	playerCount = 0;
 	game.user1 ="";
 	game.user2 ="";
@@ -387,7 +709,7 @@ function getInput3(clicked_id) { // retrieve answer
 	divTarget = document.getElementById(divDom); // removes input option and puts placeholder text until everything is answered
 	
 	answer = target.value;
-	divTarget.innerHTML = "Thanks for answering, once all the questions are answered you will see if you had the right answer!"
+	divTarget.innerHTML = "Thanks for answering, once all the questions are answered you will see if you had the right answer!";;
 	
 	dictation.answers[answerNumber - 1] = answer; // text that was entered is entered in the answers array
 	dictation.answered[answerNumber -1] = true; // changes answered status to true
@@ -395,7 +717,7 @@ function getInput3(clicked_id) { // retrieve answer
 	if (checkFinished() == true) {
 		checkAnswers();
 		}
-	console.log(dictation.answered, dictation.answers, checkFinished(), dictation.correctAnswer);
+	// console.log(dictation.answered, dictation.answers, checkFinished(), dictation.correctAnswer);
 
 }
 
@@ -407,7 +729,7 @@ function urlGenerator (string) { // generates url based on chosen word
 	var i;
 	var underScore = "_";
 	var url;
-	console.log(string)
+	// console.log(string);
 	len = string.length;
 	
 	firstLetter = string.slice(0,1);
@@ -435,14 +757,8 @@ function urlGenerator (string) { // generates url based on chosen word
 
 function generateQuestions() { // generate the number of questions selected by the user 
 	var target;
-	var questionx;
-	var questionId;
 	var randomQuestion;
 	var randomInt;
-	var sourcex;
-	var sourceId;
-	var answerx;
-	var answerId;
 	var i = 0 ;
 	var j;
 	var questions;
@@ -460,7 +776,7 @@ function generateQuestions() { // generate the number of questions selected by t
 		j = i + 1;
 		
 		// adds the needed HTML for the question 
-		target.insertAdjacentHTML("beforeend", "<div class ='row'> <div class = 'col-sm-6'> <h3 id ='questionx'> Question X </h3> <audio controls> <source id ='sourcex' src ='https://dictionary.cambridge.org/media/english/us_pron/c/cat/cat__/cat.mp3' type='audio/mpeg'> </audio></div><div class = 'col-sm-6'>  <h3 id ='answerx'> Answer X</h3> <div class='input-group mb-3' id ='divx'> <input type ='text' class = 'form-control' placeholder ='Type in your answer' id ='inputx'> <div class='input-group-append'> <button class ='btn btn-info' type ='button' id = 'buttonx' onclick ='getInput3(this.id)'> Go </button> </div> </div> </div> </div>")
+		target.insertAdjacentHTML("beforeend", "<div class ='row'> <div class = 'col-sm-6'> <h3 id ='questionx'> Question X </h3> <audio controls> <source id ='sourcex' src ='https://dictionary.cambridge.org/media/english/us_pron/c/cat/cat__/cat.mp3' type='audio/mpeg'> </audio></div><div class = 'col-sm-6'>  <h3 id ='answerx'> Answer X</h3> <div class='input-group mb-3' id ='divx'> <input type ='text' class = 'form-control' placeholder ='Type in your answer' id ='inputx'> <div class='input-group-append'> <button class ='btn btn-info' type ='button' id = 'buttonx' onclick ='getInput3(this.id)'> Go </button> </div> </div> </div> </div>");;
 		
 		// changes the id/text for question#
 		changeId("question", j, undefined, "Question");
@@ -487,8 +803,8 @@ function generateQuestions() { // generate the number of questions selected by t
 
 function getInput4() { // number of questions selected in the list is assigned to dictation.numberOfQuestions
 	var e = document.getElementById("selectionList");
-	var selectedNumber = e.options[e.selectedIndex].value; // assigns value of selected number
-	dictation.numberOfQuestions = selectedNumber;	
+
+	dictation.numberOfQuestions  = e.options[e.selectedIndex].value; // assigns value of selected number
 }
 
 function checkFinished() { // returns whether all the questions are answered
@@ -512,7 +828,6 @@ function checkAnswers () { // checks if answers are ok
 	var j;
 	var targetDiv;
 	var isWrong = 0;
-	var targetButton;
 	
 	
 	
@@ -544,7 +859,7 @@ function checkAnswers () { // checks if answers are ok
 function createButton (text, buttonId, onclickFunction) { // creates button in questions div
 	var targetDom;
 	var targetButton;
-	console.log(buttonId)
+	// console.log(buttonId);
 	targetDom = document.getElementById("questions");
 	
 	targetDom.insertAdjacentHTML("beforeend", "<div  id = 'practiceButtonId' style= 'text-align:center'> <button type='button' id ='practiceButton' class='btn btn-primary' onclick = 'null'></button></div>");
@@ -629,7 +944,7 @@ function getInput5(clicked_id) {
 			divDom.innerHTML = "Congratulations!";
 			switch (checkPracticeOver()) { // if all the practice is done, gives you the option to reset the game 
 			case true:
-				createButton("Reset the game", "resetButton", "resetGame()")
+				createButton("Reset the game", "resetButton", "resetGame()");;
 				break;
 			case false: 
 				break;
